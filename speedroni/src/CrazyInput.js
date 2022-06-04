@@ -40,7 +40,7 @@ export function CrazyInput(props) {
       });
 
       return () => clearInterval(interval);
-    }, 50000);
+    }, 4000);
   }, []);
 
   return (

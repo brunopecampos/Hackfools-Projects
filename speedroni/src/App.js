@@ -5,7 +5,7 @@ import { CrazyInput } from "./CrazyInput";
 import { useEffect, useState } from "react";
 import DrinkSelector from "./DrinkSelector";
 
-const timelimit = 15;
+const timelimit = 180;
 
 function App() {
   const [page, setPage] = useState(1);
@@ -150,7 +150,7 @@ function App() {
                 </span>
                 <input
                   type="number"
-                  name="numero"
+                  name="telefone"
                   onChange={inputsHandler}
                   maxLength={11}
                 />
