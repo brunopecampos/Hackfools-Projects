@@ -15,14 +15,14 @@ function App() {
     cep: "",
   });
 
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(timelimit);
   const [timeout, setTimeout] = useState(true);
 
   useEffect(()=>{
     
     if (!timeout){
       const id = setInterval(()=>{      
-          setTimer(prev => prev +1)     
+          setTimer(prev => prev -1)     
       }, 1000)
       return ()=>{
         clearInterval(id);
@@ -32,7 +32,7 @@ function App() {
   }, [timeout])
 
   useEffect(()=>{
-    if(timer >= timelimit && !timeout){
+    if(timer <= 0 && !timeout){
       setTimeout(true);
       // O QUE FAZER??
       console.log("HAHAHAHAHHAHA");
