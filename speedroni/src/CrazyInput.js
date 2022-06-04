@@ -25,7 +25,7 @@ export function CrazyInput(props) {
     setSabor(e.target.value);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setSabor((sabor) => {
         if (sabor.length > 1) {
@@ -40,7 +40,7 @@ export function CrazyInput(props) {
       });
 
       return () => clearInterval(interval);
-    }, 4000);
+    }, 50000);
   }, []);
 
   return (

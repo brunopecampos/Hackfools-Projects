@@ -1,12 +1,9 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { AudioPlayer } from "./AudioPlayer";
-import { AudioPlayerProvider } from "react-use-audio-player";
-import { useState } from "react";
 import PhoneSelector from "./PhoneSelector";
 import { Howl, Howler } from "howler";
 import { CrazyInput } from "./CrazyInput";
 import { useEffect, useState } from "react";
+import DrinkSelector from "./DrinkSelector";
 
 const timelimit = 15;
 
@@ -17,6 +14,7 @@ function App() {
     sabor: "",
     bebida: "",
     cep: "",
+    telefone: "",
   });
 
   const [timer, setTimer] = useState(timelimit);
@@ -37,7 +35,7 @@ function App() {
     if (timer <= 0 && !timeout) {
       setTimeout(true);
       // O QUE FAZER??
-      console.log("HAHAHAHAHHAHA");
+      if (page != 5) setPage(-1);
     }
   }, [timer]);
 
@@ -130,9 +128,8 @@ function App() {
                   onChange={inputsHandler}
                   style={{ borderRadius: 5, padding: 5 }}
                 >
-                  <option value="Coca">Coca</option>
                   <option value="Doly">Doly</option>
-                  <option value="Jess">Jesus</option>
+
                   <option value="Guarana">Guarana</option>
                   <option value="Suquinho">Suquinho</option>
                 </select>
@@ -145,7 +142,21 @@ function App() {
                 </span>
                 <input type="text" name="cep" onChange={inputsHandler} maxLength={8} />
               </label>
+              <label>
+                <span
+                  style={{ color: "Black", marginLeft: 40, backgroundColor: "yellow" }}
+                >
+                  Telefone:
+                </span>
+                <input
+                  type="number"
+                  name="numero"
+                  onChange={inputsHandler}
+                  maxLength={11}
+                />
+              </label>
               <br></br>
+
               <button
                 style={{
                   padding: 30,
@@ -173,8 +184,53 @@ function App() {
             <p style={{ fontSize: 40 }}>Confirme o sabor escolhido: {inputField.sabor}</p>
             <CrazyInput saborDado={inputField.sabor} nextPage={nextPage} />
           </>
+        ) : page === 4 ? (
+          <div style={{ width: "60vw" }}>
+            <DrinkSelector href={inputField.bebida + ".png"} setCorrect={nextPage} />
+          </div>
+        ) : page === 5 ? (
+          <div>
+            <p style={{ marginTop: 0, fontSize: 40 }}>
+              Parabens, sua pizza está a caminho
+            </p>
+            <p
+              style={{
+                marginRight: 20,
+                marginLeft: 20,
+                fontSize: 30,
+                backgroundColor: "yellow",
+                opacity: 0.7,
+              }}
+            >
+              Muito bem! Voce se provou digno da melhor pizza do mundo. Agora, aproveite
+              um privilegio que poucos possuem acesso, com uma pizza deliciosa!
+            </p>
+            <img
+              src="https://c.tenor.com/kQ8n1syYw3wAAAAC/pizza-time-party.gif"
+              alt="display image"
+            />
+          </div>
         ) : (
-          <div></div>
+          <div>
+            <p style={{ marginTop: 0, fontSize: 50 }}>
+              Não foi possível enviar a pizza :(
+            </p>
+            <p
+              style={{
+                marginRight: 20,
+                marginLeft: 20,
+
+                fontSize: 40,
+                backgroundColor: "yellow",
+                opacity: 0.7,
+              }}
+            >
+              Voce falhou. Ainda resta muito treino pela frente ate que voce possa chegar
+              a ser digno de nossa magnifica pizza. Mas como somos benevolentes, vamos te
+              dar uma segunda chance. Tente novamente!
+            </p>
+            <img src="../pizza.jpeg" alt="display image" />
+          </div>
         )}
       </header>
       <div
