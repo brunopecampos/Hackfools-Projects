@@ -6,6 +6,9 @@ import { useState } from "react";
 import PhoneSelector from "./PhoneSelector";
 import { Howl, Howler } from "howler";
 import { CrazyInput } from "./CrazyInput";
+import { useEffect, useState } from "react";
+
+const timelimit = 15;
 
 function App() {
   const [page, setPage] = useState(1);
@@ -16,7 +19,31 @@ function App() {
     cep: "",
   });
 
-  console.log(inputField.sabor);
+  const [timer, setTimer] = useState(timelimit);
+  const [timeout, setTimeout] = useState(true);
+
+  useEffect(() => {
+    if (!timeout) {
+      const id = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+      return () => {
+        clearInterval(id);
+      };
+    }
+  }, [timeout]);
+
+  useEffect(() => {
+    if (timer <= 0 && !timeout) {
+      setTimeout(true);
+      // O QUE FAZER??
+      console.log("HAHAHAHAHHAHA");
+    }
+  }, [timer]);
+
+  const toText = (sec) => {
+    return ("0" + Math.floor(sec / 60)).slice(-2) + ":" + ("0" + (sec % 60)).slice(-2);
+  };
   const inputsHandler = (e) => {
     const newInputs = { ...inputField, [e.target.name]: e.target.value };
     setInputField(newInputs);
@@ -24,6 +51,7 @@ function App() {
 
   const submitButton = () => {
     setPage(2);
+    setTimeout(false);
   };
 
   const sound = new Howl({
@@ -47,6 +75,7 @@ function App() {
                 fontSize: "100px",
                 fontStyle: "italic",
                 color: "black",
+                fontFamily: "Kalam",
               }}
             >
               SpeedRonni
@@ -148,6 +177,17 @@ function App() {
           <div></div>
         )}
       </header>
+      <div
+        style={{
+          position: "fixed",
+          top: "15px",
+          right: "15px",
+          fontSize: "20pt",
+          color: "white",
+        }}
+      >
+        {toText(timer)}
+      </div>
     </div>
   );
 }
