@@ -3,6 +3,9 @@ import "./App.css";
 import { AudioPlayer } from "./AudioPlayer";
 import { AudioPlayerProvider } from "react-use-audio-player";
 import { useState } from "react";
+import PhoneSelector from "./PhoneSelector";
+import { Howl, Howler } from "howler";
+import { CrazyInput } from "./CrazyInput";
 
 function App() {
   const [page, setPage] = useState(1);
@@ -13,13 +16,25 @@ function App() {
     cep: "",
   });
 
+  console.log(inputField.sabor);
   const inputsHandler = (e) => {
-    setInputField({ [e.target.name]: e.target.value });
+    const newInputs = { ...inputField, [e.target.name]: e.target.value };
+    setInputField(newInputs);
   };
 
   const submitButton = () => {
     setPage(2);
   };
+
+  const sound = new Howl({
+    src: ["../public/italianino.mp3"],
+  });
+
+  const nextPage = () => {
+    setPage(page + 1);
+  };
+
+  sound.play();
 
   return (
     <div className="App">
@@ -62,7 +77,6 @@ function App() {
                 <select
                   name="sabor"
                   onChange={inputsHandler}
-                  value={inputField.sabor}
                   style={{ borderRadius: 5, padding: 5 }}
                 >
                   <option value="Portuguesa">Portuguesa</option>
@@ -85,7 +99,6 @@ function App() {
                 <select
                   name="bebida"
                   onChange={inputsHandler}
-                  value={inputField.bebida}
                   style={{ borderRadius: 5, padding: 5 }}
                 >
                   <option value="Coca">Coca</option>
@@ -101,13 +114,7 @@ function App() {
                 >
                   CEP:
                 </span>
-                <input
-                  type="text"
-                  name="cep"
-                  onChange={inputsHandler}
-                  value={inputField.cep}
-                  maxLength={6}
-                />
+                <input type="text" name="cep" onChange={inputsHandler} maxLength={8} />
               </label>
               <br></br>
               <button
@@ -125,6 +132,18 @@ function App() {
               </button>
             </form>
           </div>
+        ) : page === 2 ? (
+          <div style={{ marginTop: 50 }}>
+            <p style={{ alignSelf: "center", color: "black", fontSize: 50 }}>
+              Confirme seu CEP, para enviarmos para o lugar certo!
+            </p>
+            <PhoneSelector cep={inputField.cep} nextPage={nextPage} />
+          </div>
+        ) : page === 3 ? (
+          <>
+            <p style={{ fontSize: 40 }}>Confirme o sabor escolhido: {inputField.sabor}</p>
+            <CrazyInput saborDado={inputField.sabor} nextPage={nextPage} />
+          </>
         ) : (
           <div></div>
         )}
