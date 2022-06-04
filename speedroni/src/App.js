@@ -32,6 +32,7 @@ function App() {
                 fontSize: "100px",
                 fontStyle: "italic",
                 color: "black",
+                fontFamily: "Kalam"
               }}
             >
               SpeedRonni
