@@ -2,7 +2,9 @@ import logo from "./logo.svg";
 import "./App.css";
 import { AudioPlayer } from "./AudioPlayer";
 import { AudioPlayerProvider } from "react-use-audio-player";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const timelimit=15;
 
 function App() {
   const [page, setPage] = useState(1);
@@ -13,12 +15,40 @@ function App() {
     cep: "",
   });
 
+  const [timer, setTimer] = useState(0);
+  const [timeout, setTimeout] = useState(true);
+
+  useEffect(()=>{
+    
+    if (!timeout){
+      const id = setInterval(()=>{      
+          setTimer(prev => prev +1)     
+      }, 1000)
+      return ()=>{
+        clearInterval(id);
+      }
+    }
+    
+  }, [timeout])
+
+  useEffect(()=>{
+    if(timer >= timelimit && !timeout){
+      setTimeout(true);
+      // O QUE FAZER??
+      console.log("HAHAHAHAHHAHA");
+    }
+  }, [timer])
+
+  const toText = (sec) =>{
+    return ("0" + Math.floor(sec/60) ).slice(-2) + ":" + ("0"+ (sec % 60)).slice(-2);
+  }
   const inputsHandler = (e) => {
     setInputField({ [e.target.name]: e.target.value });
   };
 
   const submitButton = () => {
     setPage(2);
+    setTimeout(false);
   };
 
   return (
@@ -130,6 +160,14 @@ function App() {
           <div></div>
         )}
       </header>
+      <div style={{
+        position:'fixed',
+        top:'15px',
+        right:'15px',
+        fontSize:'20pt',
+        color:'white'
+
+      }}>{toText(timer)}</div>
     </div>
   );
 }
